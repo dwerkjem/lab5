@@ -1,5 +1,7 @@
 def main():
-    print("Hello from lab5!")
+    total_attendees = 0
+    while True:
+        pass
 
 
 if __name__ == "__main__":

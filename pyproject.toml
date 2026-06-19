@@ -15,3 +15,8 @@ main = "src.main:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src"]
+
+[dependency-groups]
+dev = [
+    "lefthook>=2.1.9",
+]

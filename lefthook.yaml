@@ -1,0 +1,8 @@
+pre-commit:
+  commands:
+
+    uv-pip-freeze:
+      run: uv pip freeze --exclude-editable > requirements.txt && git add requirements.txt
+
+    pre-commit:
+      run: uv run pre-commit run --all-files
