@@ -15,7 +15,7 @@ uv sync
 run with:
 
 ```cmd
-uv run 
+uv run main
 ```
 
 ## Tests
@@ -24,4 +24,4 @@ I am using `pytest` to test most things run `uv run pytest` to launch the testin
 
 ## Pseudocode
 
-To view pseudocode go to the [pseudocode markdown](docs/Pseudocode.md) page
+To view pseudocode go to the [pseudocode markdown](docs/pseudocode.md) page
