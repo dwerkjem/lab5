@@ -3,6 +3,8 @@ Name: Derek R. Neilson
 Description: Computer Haven Seminar Registration System
 """
 
+import pandas as pd
+
 
 def main() -> None:
     """main for Computer Haven Seminar Registration System
@@ -14,10 +16,13 @@ def main() -> None:
     Returns:
         None
     """
-
+    total_revenue = 0
+    largest_company = ""
+    largest_company_size = 0
     number_of_companies = 0
     total_attendees = 0
     run = True
+    companies = []
     while run:
         company_name = input("What is your companies name?\nEnter 'done' to quit: ")
         if company_name.lower() == "done":
@@ -29,10 +34,12 @@ def main() -> None:
                         f"How many are attending from {company_name}?\nenter zero to quit: "
                     )
                 )
+
                 if attendees + total_attendees > 125:
                     raise OverflowError(
                         f"There are not enough space available {125 - total_attendees} seats are left please select less than that or enter zero to quit"
                     )
+
                 if attendees == 0:
                     run = False
                 total_attendees += attendees
@@ -41,12 +48,22 @@ def main() -> None:
                 print("Please type a whole number ie.(45)")
             except OverflowError as err:
                 print(err)
-
+        if attendees > largest_company_size:
+            largest_company_size = attendees
+            largest_company = company_name
         # Attendees should be a valid int by now
         cost_per_attendee = cost_per_attendee_calc(attendees)
         registration_cost = attendees * cost_per_attendee
+        total_revenue += registration_cost
         print(f"That will cost {company_name} ${registration_cost:,.2f}")
         number_of_companies += 1
+        companies.append(
+            {
+                "Company Name": company_name,
+                "Attendees": attendees,
+                "Cost bracket": cost_per_attendee,
+            }
+        )
         if run:
             another_company = input(
                 "Should another company be entered?\nY or N: "
@@ -58,6 +75,16 @@ def main() -> None:
             if another_company == "N":
                 run = False
                 break
+    print()
+    print(pd.DataFrame(companies))
+    print()
+    print(f"Companies Registered: {number_of_companies}")
+    print(f"Total Attendees: {total_attendees}")
+    print(f"Total Revenue: {total_revenue:,.2f}")
+    print(f"Average Revenue Per Attendee: {total_revenue / number_of_companies:,.2f}")
+    print(
+        f"Largest company was {largest_company} with {largest_company_size} attendees"
+    )
 
 
 def cost_per_attendee_calc(attendees: int) -> int:
