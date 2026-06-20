@@ -6,6 +6,27 @@ Description: Computer Haven Seminar Registration System
 import pandas as pd
 
 
+def cost_per_attendee_calc(attendees: int) -> int:
+    """Calculates the cost per an attendee
+
+    Args:
+        attendees (int): number of attendees
+
+    Returns:
+        int: the cost per each attendee
+    """
+
+    if attendees <= 0:
+        cost_per_attendee = 0
+    elif attendees < 4:
+        cost_per_attendee = 150
+    elif 4 <= attendees < 10:
+        cost_per_attendee = 100
+    elif attendees >= 10:
+        cost_per_attendee = 90
+    return cost_per_attendee
+
+
 def main() -> None:
     """main for Computer Haven Seminar Registration System
 
@@ -19,6 +40,7 @@ def main() -> None:
     total_revenue = 0
     largest_company = ""
     largest_company_size = 0
+    largest_company_revue = 0
     number_of_companies = 0
     total_attendees = 0
     run = True
@@ -42,18 +64,20 @@ def main() -> None:
 
                 if attendees == 0:
                     run = False
+                    break
                 total_attendees += attendees
                 break
             except ValueError:
                 print("Please type a whole number ie.(45)")
             except OverflowError as err:
                 print(err)
+        cost_per_attendee = cost_per_attendee_calc(attendees)
+        registration_cost = attendees * cost_per_attendee
         if attendees > largest_company_size:
             largest_company_size = attendees
             largest_company = company_name
+            largest_company_revue = registration_cost
         # Attendees should be a valid int by now
-        cost_per_attendee = cost_per_attendee_calc(attendees)
-        registration_cost = attendees * cost_per_attendee
         total_revenue += registration_cost
         print(f"That will cost {company_name} ${registration_cost:,.2f}")
         number_of_companies += 1
@@ -62,6 +86,7 @@ def main() -> None:
                 "Company Name": company_name,
                 "Attendees": attendees,
                 "Cost bracket": cost_per_attendee,
+                "Cost": registration_cost,
             }
         )
         if run:
@@ -75,38 +100,21 @@ def main() -> None:
             if another_company == "N":
                 run = False
                 break
+    try:
+        average = total_revenue / number_of_companies
+    except ZeroDivisionError:
+        average = 0
     print()
     print(pd.DataFrame(companies))
     print()
     print(f"Companies Registered: {number_of_companies}")
     print(f"Total Attendees: {total_attendees}")
-    print(f"Total Revenue: {total_revenue:,.2f}")
-    print(f"Average Revenue Per Attendee: {total_revenue / number_of_companies:,.2f}")
+    print(f"Total Revenue: ${total_revenue:,.2f}")
+    print(f"Average Revenue Per Attendee: ${average}")
     print(
-        f"Largest company was {largest_company} with {largest_company_size} attendees"
+        f"Largest company was {largest_company} with {largest_company_size} attendees and costed {largest_company_revue}"
     )
 
 
-def cost_per_attendee_calc(attendees: int) -> int:
-    """Calculates the cost per an attendee
-
-    Args:
-        attendees (int): number of attendees
-
-    Returns:
-        int: the cost per each attendee
-    """
-
-    if attendees == 0:
-        cost_per_attendee = 0
-    elif attendees < 4:
-        cost_per_attendee = 150
-    elif 4 <= attendees < 10:
-        cost_per_attendee = 100
-    elif attendees >= 10:
-        cost_per_attendee = 90
-    return cost_per_attendee
-
-
 if __name__ == "__main__":
-    main()
+    main()  # pragma: no cover
