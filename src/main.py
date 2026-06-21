@@ -4,6 +4,7 @@ Description: Computer Haven Seminar Registration System
 """
 
 import pandas as pd
+import src.plotting
 
 
 def cost_per_attendee_calc(attendees: int) -> int:
@@ -63,7 +64,6 @@ def main() -> None:
                     )
 
                 if attendees == 0:
-                    run = False
                     break
                 total_attendees += attendees
                 break
@@ -114,6 +114,9 @@ def main() -> None:
     print(
         f"Largest company was {largest_company} with {largest_company_size} attendees and costed {largest_company_revue}"
     )
+    should_plot = input("Do you want a graph?\nYes or No: ").lower()
+    if should_plot == "yes":
+        src.plotting.seminar_plots(companies)  # pragma: no cover
 
 
 if __name__ == "__main__":
