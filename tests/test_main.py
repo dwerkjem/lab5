@@ -49,6 +49,7 @@ def test_main_registers_one_company(monkeypatch, capsys):
             "Acme",  # company name
             "3",  # attendees
             "N",  # no more companies
+            "No",
         ],
     )
 
@@ -61,7 +62,7 @@ def test_main_registers_one_company(monkeypatch, capsys):
 
 def test_main_registers_multiple_companies(monkeypatch, capsys):
     output = run_main_with_inputs(
-        monkeypatch, capsys, ["Acme", "3", "Y", "Beta Corp", "10", "N"]
+        monkeypatch, capsys, ["Acme", "3", "Y", "Beta Corp", "10", "N", "No"]
     )
 
     assert "That will cost Acme $450.00" in output
@@ -81,6 +82,7 @@ def test_main_rejects_non_integer_attendees(monkeypatch, capsys):
             "abc",  # invalid
             "2",  # valid retry
             "N",
+            "No",
         ],
     )
 
@@ -99,6 +101,7 @@ def test_main_rejects_over_capacity(monkeypatch, capsys):
             "126",  # too many
             "125",  # valid retry
             "N",
+            "No",
         ],
     )
 
@@ -109,7 +112,7 @@ def test_main_rejects_over_capacity(monkeypatch, capsys):
 
 
 def test_main_done_immediately_does_not_crash(monkeypatch, capsys):
-    output = run_main_with_inputs(monkeypatch, capsys, ["done"])
+    output = run_main_with_inputs(monkeypatch, capsys, ["done", "NO"])
 
     assert "Companies Registered: 0" in output
     assert "Total Attendees: 0" in output
@@ -125,6 +128,7 @@ def test_main_invalid_Y_or_N(monkeypatch, capsys):
             "1",
             "No",  # Invalid input
             "n",  # Valid Retry
+            "No",
         ],
     )
 
@@ -138,10 +142,7 @@ def test_main_zero_attendees_quits(monkeypatch, capsys):
     output = run_main_with_inputs(
         monkeypatch,
         capsys,
-        [
-            "Acme",
-            "0",
-        ],
+        ["Acme", "0", "N", "NO"],
     )
 
     assert "That will cost Acme $0.00" in output
